@@ -1,10 +1,5 @@
 package payment
 
-/**
- * Author:  dahoopster
- * Date: 8/6/12
- * Time: 12:22 AM
- */
 class Constants {
     static final def ARGS_PARAM = 'args'
     static final def DST_EMAIL_KEY = 'd$tem@ilk3y'
