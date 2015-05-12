@@ -3,6 +3,7 @@ package payment
 import com.stripe.exception.CardException
 import com.stripe.model.Charge
 import com.stripe.model.Customer
+import com.stripe.model.Token
 import com.stripe.net.RequestOptions
 import exceptions.APIRequestException
 import exceptions.PaymentDeclinedException
@@ -184,18 +185,34 @@ class PaymentService {
         }
     }
 
+    /**
+        This is a debug method
+     */
+    def getCardToken() {
+        try {
+            def tokenParams = [
+               "card": [
+                       "number": "4242424242424242",
+                       "exp_month": 5,
+                       "exp_year": 2025,
+                       "cvc": "314"
+               ]
+            ]
+
+            Token.create(tokenParams, getRequestOptions());
+        }
+        catch(e) {
+            log.error("Failed to get card Token", e)
+            throw new APIRequestException('Stripe', 'createCard')
+        }
+    }
+
 
     def getRequestOptions() {
-        def apiKey = 'FILL ME IN'
-        def stripeVersion = 'FILL ME IN'
-        def idempotencyKey = 'FILL ME IN'
-        def stripeAccount = 'FILL ME IN'
+        def apiKey = grailsApplication.config.grails.app.conf.stripe.key as String
         def requestOptionsBuilder = new RequestOptions.RequestOptionsBuilder()
 
         requestOptionsBuilder.apiKey = apiKey
-        requestOptionsBuilder.stripeVersion = stripeVersion
-        requestOptionsBuilder.idempotencyKey = idempotencyKey
-        requestOptionsBuilder.stripeAccount = stripeAccount
 
         return requestOptionsBuilder.build()
     }

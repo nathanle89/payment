@@ -16,10 +16,25 @@ class RequestAuthenticationFilters {
         //check for Basic Authentication when requesting authentication params
         apiAuth(controller: '*', action: '*'){
             before = {
-                def basicAuth = request.getHeader(Constants.HTTP_HEADER_AUTHORIZATION)
-                def authValue = (basicAuth - 'Basic').trim()
-                def correctAuthValue = (authValue == Constants.BASIC_AUTH_VALUE)
-                if (!correctAuthValue){
+                try {
+                    def basicAuth = request.getHeader(Constants.HTTP_HEADER_AUTHORIZATION)
+                    def authValue = (basicAuth - 'Basic').trim()
+                    def correctAuthValue = (authValue == Constants.BASIC_AUTH_VALUE)
+                    if (!correctAuthValue){
+                        def returnModel = [
+                                status: 'Unauthorized',
+                                reason: 401,
+                                message: 'Invalid Credentials'
+                        ]
+                        render(contentType: Constants.CONTENT_TYPE_JSON, status: 401,
+                                text: "${returnModel as JSON}")
+                        return false
+                    }
+                    else{
+                        return true
+                    }
+                }
+                catch(Exception e) {
                     def returnModel = [
                             status: 'Unauthorized',
                             reason: 401,
@@ -28,9 +43,6 @@ class RequestAuthenticationFilters {
                     render(contentType: Constants.CONTENT_TYPE_JSON, status: 401,
                             text: "${returnModel as JSON}")
                     return false
-                }
-                else{
-                    return true
                 }
             }
         }
