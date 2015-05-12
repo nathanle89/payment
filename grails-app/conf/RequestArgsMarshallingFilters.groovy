@@ -7,8 +7,7 @@ class RequestArgsMarshallingFilters {
     def filters = {
         all(controller: 'error|ping|facebookTabAppTracking', action: '*', invert: true) {
             before = {
-                if (request.method == 'GET' && params[(Constants.ARGS_PARAM)]) {
-                    unmarshalArgsJson(params[(Constants.ARGS_PARAM)], params)
+                if (request.method == 'GET') {
                     return true
                 }
                 else if (request.method == 'POST') {
