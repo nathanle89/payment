@@ -1,3 +1,5 @@
+import grails.util.Environment
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -63,6 +65,7 @@ grails.hibernate.cache.queries = false
 environments {
     development {
         grails.logging.jul.usebridge = true
+
     }
     production {
         grails.logging.jul.usebridge = false
@@ -90,4 +93,38 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+grails {
+    app {
+        conf {
+            stripe {
+                key = 'sk_test_sqFGa7Ery76Yw3peb7qzJX8t'
+            }
+        }
+    }
+}
+
+// env reader
+if (Environment.current.name != 'test') {
+    def envReader = EnvReaderFactory.envReader()
+    grails {
+        app {
+            conf {
+                appEnv = envReader.getEnv('APP_ENV')
+            }
+        }
+    }
+
+    if (grails.app.conf.appEnv in ['Development', 'DbMigration']) {
+        grails.config.locations = [
+                "file:${basedir}/grails-app/conf/Config${grails.app.conf.appEnv}.groovy",
+        ]
+    }
+    else {
+        grails.config.locations = [
+                "classpath:Config${grails.app.conf.appEnv}.groovy",
+        ]
+    }
+}
+
 
