@@ -99,7 +99,7 @@ grails {
     app {
         conf {
             stripe {
-                key = 'sk_test_sqFGa7Ery76Yw3peb7qzJX8t'
+                key = 'sk_test_c5JdeqnYMRn1ECoVnOWRCYRV'
             }
         }
     }

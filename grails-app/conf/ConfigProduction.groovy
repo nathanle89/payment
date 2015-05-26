@@ -2,7 +2,7 @@ grails {
     app {
         conf {
             stripe {
-                key = 'sk_live_lbRKcXNLIUbnPJB7N4XQC1R9'
+                key = 'sk_live_1HwRgJI8Y23KPFF2Y3efjJIq'
             }
         }
     }
