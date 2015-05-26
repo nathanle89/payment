@@ -150,18 +150,40 @@ class PaymentService {
      *
      * This method will create a charge on the card without creating an invoice
      */
-    def createNewStripeCharge(customerId, amount) {
+    def createNewStripeCharge(customerId, amount, capture = false) {
         try {
             def charge = Charge.create([
                     customer: customerId,
                     amount: amount,
-                    currency: Constants.DEFAULT_CURRENCY
+                    currency: Constants.DEFAULT_CURRENCY,
+                    capture: capture
             ], getRequestOptions())
 
             return charge
         }
         catch (e) {
             log.error("Failed to charge customer with ID <${customerId}>", e)
+            throw new APIRequestException('Stripe', 'createNewCharge')
+        }
+    }
+
+
+    def captureStripeCharge(chargeId, amount, emailReceipt) {
+        try {
+            def charge = Charge.retrieve(chargeId, getRequestOptions())
+            def params = [
+                amount: amount
+            ]
+            if (emailReceipt) {
+                params['receipt_email'] = emailReceipt
+            }
+
+            charge.capture(params)
+
+            return charge
+        }
+        catch (e) {
+            log.error("Failed to capture charge with ID <${chargeId}>", e)
             throw new APIRequestException('Stripe', 'createNewCharge')
         }
     }
