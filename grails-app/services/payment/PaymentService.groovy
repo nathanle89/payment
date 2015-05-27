@@ -150,8 +150,12 @@ class PaymentService {
      *
      * This method will create a charge on the card without creating an invoice
      */
-    def createNewStripeCharge(customerId, amount, capture = false) {
+    def createNewStripeCharge(customerId, amount, capture) {
         try {
+            if (capture == null) {
+                capture = false
+            }
+
             def charge = Charge.create([
                     customer: customerId,
                     amount: amount,
