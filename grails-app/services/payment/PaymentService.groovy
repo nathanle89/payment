@@ -182,9 +182,7 @@ class PaymentService {
                 params['receipt_email'] = emailReceipt
             }
 
-            charge.capture(params)
-
-            return charge
+            return charge.capture(params, getRequestOptions())
         }
         catch (e) {
             log.error("Failed to capture charge with ID <${chargeId}>", e)

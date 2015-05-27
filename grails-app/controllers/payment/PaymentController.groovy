@@ -4,8 +4,9 @@ class PaymentController extends AbstractController {
 
     static allowedMethods = [
             charge: 'POST',
-            getTestToken: 'POST',
-            createCustomer: 'POST'
+            getTestToken: 'GET',
+            createCustomer: 'POST',
+            captureCharge: 'POST'
     ]
 
     def paymentService
@@ -45,8 +46,9 @@ class PaymentController extends AbstractController {
     }
 
     def charge() {
+        def args = params[Constants.ARGS_PARAM]
+
         try {
-            def args = params[Constants.ARGS_PARAM]
             def charge = paymentService.createNewStripeCharge(args.customerId, args.amount, args.capture)
             renderResponse([
                     chargeId: charge.id
@@ -60,17 +62,18 @@ class PaymentController extends AbstractController {
     }
 
     def captureCharge() {
+        def args = params[Constants.ARGS_PARAM]
+
         try {
-            def args = params[Constants.ARGS_PARAM]
             def charge = paymentService.captureStripeCharge(args.chargeId, args.amount, args.emailReceipt)
 
             renderResponse([
                     chargeId: charge.id,
-                    capture: charge.capture
+                    capture: charge.captured
             ])
         }
         catch(e) {
-            def errMsg = "Error while capturing Stripe Charge for CustomerId: ${args.customerId}"
+            def errMsg = "Error while capturing Stripe Charge for Id: ${args.chargeId}"
             log.error(errMsg, e)
             renderError(errMsg)
         }
