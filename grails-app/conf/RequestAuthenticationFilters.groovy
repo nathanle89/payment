@@ -13,8 +13,12 @@ class RequestAuthenticationFilters {
             }
         }
 
+        goThrough(controller: 'webhookHandler', action: '*') {
+            return true
+        }
+
         //check for Basic Authentication when requesting authentication params
-        apiAuth(controller: '*', action: '*'){
+        apiAuth(controller: 'webhookHandler', action: '*', revert: true){
             before = {
                 try {
                     def basicAuth = request.getHeader(Constants.HTTP_HEADER_AUTHORIZATION)
