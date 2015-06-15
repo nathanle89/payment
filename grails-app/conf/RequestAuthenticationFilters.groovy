@@ -14,7 +14,10 @@ class RequestAuthenticationFilters {
         }
 
         goThrough(controller: 'webhookHandler', action: '*') {
-            return true
+            before ={
+                log.debug(request.getServerName())
+                return true
+            }
         }
 
         //check for Basic Authentication when requesting authentication params
