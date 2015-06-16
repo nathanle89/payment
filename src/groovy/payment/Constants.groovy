@@ -2,12 +2,13 @@ package payment
 
 class Constants {
     static final def ARGS_PARAM = 'args'
-    static final def DST_EMAIL_KEY = 'd$tem@ilk3y'
+    static final def BASIC_AUTH_USERNAME = 'dryv3app@k3y'
+    static final def BASIC_AUTH_PASSWORD = 'G3ner@tedPwd!4DryveApp'
     static final def HTTP_HEADER_AUTHORIZATION = 'Authorization'
     // base 64 encoded value of "dstping:p!ngt3st"
     static final def PING_AUTH_VALUE = 'ZHN0cGluZzpwIW5ndDNzdA=='
     // for relay
-    static final def BASIC_AUTH_VALUE = 'ZHN0YXV0aDprQHJCL2tiUHNQYU5oXTA5LVprZQ=='
+    static final def BASIC_AUTH_VALUE = 'ZHJ5djNhcHBAazN5OkczbmVyQHRlZFB3ZCE0RHJ5dmVBcHA='
     // for making requests to waterfall
     static final def BASIC_AUTH_WATERFALL_USER = 'system.user'
     static final def BASIC_AUTH_WATERFALL_PWD = 'G3ner@tedPwd!'
