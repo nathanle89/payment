@@ -2,4 +2,5 @@
 target/
 target/*
 *.class
-.csv
+*.csv
+scripts/phantom/*.csv

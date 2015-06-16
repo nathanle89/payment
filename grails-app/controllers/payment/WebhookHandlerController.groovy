@@ -8,9 +8,10 @@ class WebhookHandlerController extends AbstractController {
 
     def orderCompleted() {
         try {
-            renderResponse([
-                    success: true
-            ])
+            def args = params[Constants.ARGS_PARAM]
+            //For debugging purpose
+            println args
+            renderResponse(args)
         }
         catch(e) {
             def errMsg = "Error processing webhook request"
