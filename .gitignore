@@ -4,3 +4,4 @@ target/*
 *.class
 *.csv
 scripts/phantom/*.csv
+*.iml
