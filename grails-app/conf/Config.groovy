@@ -101,6 +101,13 @@ grails {
             stripe {
                 key = 'sk_test_c5JdeqnYMRn1ECoVnOWRCYRV'
             }
+
+            bringg {
+                companyId = '3477'
+                companyName = 'Dryve, Inc.'
+                accessToken = '1mitRVUh5Rx4i2HiEzz9'
+                secret = 'UGzbgnj_d3nKACzp7AsT'
+            }
         }
     }
 }

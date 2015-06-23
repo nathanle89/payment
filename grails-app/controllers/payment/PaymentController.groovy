@@ -6,10 +6,12 @@ class PaymentController extends AbstractController {
             charge: 'POST',
             getTestToken: 'GET',
             createCustomer: 'POST',
-            captureCharge: 'POST'
+            captureCharge: 'POST',
+            bringgTask: 'POST'
     ]
 
     def paymentService
+    def bringgClientService
 
     def getTestToken() {
         try{
@@ -74,6 +76,20 @@ class PaymentController extends AbstractController {
         }
         catch(e) {
             def errMsg = "Error while capturing Stripe Charge for Id: ${args.chargeId}"
+            log.error(errMsg, e)
+            renderError(errMsg)
+        }
+    }
+
+    /* For Debugging purpose */
+    def bringgTask() {
+        try {
+            def args = params[Constants.ARGS_PARAM]
+            def task = bringgClientService.getTask(args.taskId)
+            renderResponse(task)
+        }
+        catch (e) {
+            def errMsg = "Error while creating Stripe Customer"
             log.error(errMsg, e)
             renderError(errMsg)
         }
