@@ -105,8 +105,8 @@ grails {
             bringg {
                 companyId = '3477'
                 companyName = 'Dryve, Inc.'
-                accessToken = '1mitRVUh5Rx4i2HiEzz9'
-                secret = 'UGzbgnj_d3nKACzp7AsT'
+                accessToken = 'G7H7RAa25Ho7eesjFVHw'
+                secret = 'u-15myHsjrM4F76N-Fc9'
             }
         }
     }

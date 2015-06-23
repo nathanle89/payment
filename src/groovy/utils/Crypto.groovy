@@ -1,5 +1,7 @@
 package utils
 
+import org.apache.commons.codec.binary.Hex
+
 import java.security.InvalidKeyException
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -11,7 +13,8 @@ class Crypto {
             SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256")
             mac.init(secretKeySpec)
             byte[] digest = mac.doFinal(data.getBytes())
-            return digest.toString()
+            byte[] hexBytes = new Hex().encode(digest);
+            return new String(hexBytes, "UTF-8");
         } catch (InvalidKeyException e) {
             throw new RuntimeException("Invalid key exception while converting to HMac SHA256")
         }
@@ -23,7 +26,8 @@ class Crypto {
             SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "HmacSHA1")
             mac.init(secretKeySpec)
             byte[] digest = mac.doFinal(data.getBytes())
-            return digest.toString()
+            byte[] hexBytes = new Hex().encode(digest);
+            return new String(hexBytes, "UTF-8");
         } catch (InvalidKeyException e) {
             throw new RuntimeException("Invalid key exception while converting to HMac SHA1")
         }

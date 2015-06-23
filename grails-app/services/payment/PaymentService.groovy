@@ -15,9 +15,6 @@ class PaymentService {
     static transactional = false
 
     def grailsApplication
-    def emailBlenderService
-    def awsEmailSender
-    def dataSourceSpy
 
     /**
      *

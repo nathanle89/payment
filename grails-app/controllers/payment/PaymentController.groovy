@@ -11,7 +11,7 @@ class PaymentController extends AbstractController {
     ]
 
     def paymentService
-    def bringgClientService
+    def bringgService
 
     def getTestToken() {
         try{
@@ -85,7 +85,7 @@ class PaymentController extends AbstractController {
     def bringgTask() {
         try {
             def args = params[Constants.ARGS_PARAM]
-            def task = bringgClientService.getTask(args.taskId)
+            def task = bringgService.getTask(args.taskId)
             renderResponse(task)
         }
         catch (e) {

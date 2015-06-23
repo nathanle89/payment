@@ -6,8 +6,11 @@ import groovyx.net.http.Method
 import org.joda.time.DateTime
 import utils.Crypto
 
-class BringgClientService {
-    private static def REST_CLIENT = new HTTPBuilder(uri: 'http://developer-api.bringg.com/partner_api')
+class BringgService {
+
+    static transactional = false
+
+    private static def REST_CLIENT = new HTTPBuilder('http://developer-api.bringg.com/partner_api')
 
     def grailsApplication
 
@@ -15,24 +18,26 @@ class BringgClientService {
         // By default Groovy creates a linkedHashMap
         def params = [
                 company_id  : grailsApplication.config.grails.app.conf.bringg.companyId,
-                access_token: grailsApplication.config.grails.app.conf.bringg.accessToken,
-                timestamp   : DateTime.now().millis
+                timestamp   : DateTime.now().millis,
+                access_token: grailsApplication.config.grails.app.conf.bringg.accessToken
         ]
 
         params['signature'] = signRequestParams(params)
 
-        return sendRequest("/tasks/${taskId}", params, ContentType.JSON, Method.GET)
+        return sendRequest("/tasks/${taskId}?${params.collect { it }.join('&')}", params, ContentType.JSON, Method.GET)
     }
 
-    def signRequestParams(params) {
+    private def signRequestParams(params) {
         Crypto.hmac_sha1(params.collect { it }.join('&'), grailsApplication.config.grails.app.conf.bringg.secret)
     }
 
-    def sendRequest(path, params, contentType, method = Method.POST) {
+    private def sendRequest(path, params, contentType, method = Method.POST) {
         try {
             return REST_CLIENT.request(method, contentType) {
                 uri.path = path
-                uri.query = params
+                if (method == Method.POST) {
+                    uri.query = params
+                }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
             ex.printStackTrace()
