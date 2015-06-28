@@ -6,11 +6,17 @@ class WebhookHandlerController extends AbstractController {
             orderCompleted: 'POST'
     ]
 
+    def bringgService
+    def paymentService
+
     def orderCompleted() {
         try {
             def args = params[Constants.ARGS_PARAM]
-            //For debugging purpose
-            println args
+            def task = bringgService.getTask(args.id)
+            // TODO read the chargeId and amount to capture
+//            def chargeId = task.task_notes[0].note.str.split("\\s+")[1]
+//            paymentService.captureStripeCharge(chargeId)
+
             renderResponse(args)
         }
         catch(e) {

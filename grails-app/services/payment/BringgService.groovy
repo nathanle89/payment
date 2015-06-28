@@ -10,7 +10,7 @@ class BringgService {
 
     static transactional = false
 
-    private static def REST_CLIENT = new HTTPBuilder('http://developer-api.bringg.com/partner_api')
+    private static def REST_CLIENT = new HTTPBuilder('http://developer-api.bringg.com')
 
     def grailsApplication
 
@@ -22,9 +22,9 @@ class BringgService {
                 access_token: grailsApplication.config.grails.app.conf.bringg.accessToken
         ]
 
-        params['signature'] = signRequestParams(params)
+        params.signature = signRequestParams(params)
 
-        return sendRequest("/tasks/${taskId}?${params.collect { it }.join('&')}", params, ContentType.JSON, Method.GET)
+        return sendRequest("/partner_api/tasks/${taskId}", params, ContentType.JSON, Method.GET)
     }
 
     private def signRequestParams(params) {
@@ -33,11 +33,13 @@ class BringgService {
 
     private def sendRequest(path, params, contentType, method = Method.POST) {
         try {
+
             return REST_CLIENT.request(method, contentType) {
                 uri.path = path
-                if (method == Method.POST) {
+                if (params) {
                     uri.query = params
                 }
+                headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
             ex.printStackTrace()
